@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
+    public static final User EMPTY = new User(0, null, false);
+
     public static User createCustomer(String externalId) {
         return new User(0, externalId, false);
     }
@@ -31,6 +33,10 @@ public class User implements Serializable {
 
     public boolean isAdmin() {
         return admin;
+    }
+
+    public boolean isEmpty() {
+        return this.equals(EMPTY);
     }
 
     @Override

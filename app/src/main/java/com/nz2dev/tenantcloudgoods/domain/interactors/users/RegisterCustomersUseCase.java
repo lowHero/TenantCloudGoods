@@ -1,10 +1,13 @@
 package com.nz2dev.tenantcloudgoods.domain.interactors.users;
 
+import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 import com.nz2dev.tenantcloudgoods.domain.repositories.UserRepository;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Single;
 
 /**
  * Created by nz2Dev on 24.03.2018
@@ -12,21 +15,24 @@ import javax.inject.Singleton;
 @Singleton
 public class RegisterCustomersUseCase {
 
-    private UserRepository userRepository;
+    private final SchedulersManager schedulers;
+
+    private final UserRepository userRepository;
 
     @Inject
-    public RegisterCustomersUseCase(UserRepository userRepository) {
+    public RegisterCustomersUseCase(SchedulersManager schedulers, UserRepository userRepository) {
+        this.schedulers = schedulers;
         this.userRepository = userRepository;
     }
 
-    public User invoke(String externalId) {
-        // check if user already registered and throw exceptions.
-        // ...
-
-        User user = User.createCustomer(externalId);
-        userRepository.addUser(user);
-
-        return user;
+    public Single<User> executor(String externalId) {
+        return Single.just(User.createCustomer(externalId))
+                // ...
+                // TODO check if user already registered and throw exceptions.
+                // ...
+                .flatMap(userRepository::addUser)
+                .subscribeOn(schedulers.getBackground())
+                .observeOn(schedulers.getUI());
     }
 
 }

@@ -2,6 +2,7 @@ package com.nz2dev.tenantcloudgoods.domain.interactors.users;
 
 import com.nz2dev.tenantcloudgoods.domain.exceptions.ExternalIdNotSetException;
 import com.nz2dev.tenantcloudgoods.domain.exceptions.UserNotRegisteredException;
+import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 import com.nz2dev.tenantcloudgoods.domain.preferences.AccountPreferences;
 import com.nz2dev.tenantcloudgoods.domain.repositories.UserRepository;
@@ -9,32 +10,43 @@ import com.nz2dev.tenantcloudgoods.domain.repositories.UserRepository;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
+
 /**
  * Created by nz2Dev on 24.03.2018
  */
 @Singleton
 public class GetCurrentUserUseCase {
 
-    private UserRepository userRepository;
-    private AccountPreferences accountPreferences;
+    private final SchedulersManager schedulers;
+
+    private final UserRepository userRepository;
+    private final AccountPreferences accountPreferences;
 
     @Inject
-    public GetCurrentUserUseCase(UserRepository userRepository, AccountPreferences accountPreferences) {
+    public GetCurrentUserUseCase(SchedulersManager schedulers, UserRepository userRepository, AccountPreferences accountPreferences) {
+        this.schedulers = schedulers;
         this.userRepository = userRepository;
         this.accountPreferences = accountPreferences;
     }
 
-    public User invoke() {
-        String externalId = accountPreferences.getExternalId();
-        if (externalId == null) {
-            throw new ExternalIdNotSetException();
-        }
-
-        User user = userRepository.getUser(externalId);
-        if (user == null) {
-            throw new UserNotRegisteredException();
-        }
-        return user;
+    public Single<User> executor() {
+        return Single.just(accountPreferences.getExternalId())
+                .map(id -> {
+                    if (AccountPreferences.EMPTY_EXTERNAL_ID.equals(id)) {
+                        throw new ExternalIdNotSetException();
+                    }
+                    return id;
+                })
+                .flatMap(userRepository::getUser)
+                .map(user -> {
+                    if (user.isEmpty()) {
+                        throw new UserNotRegisteredException();
+                    }
+                    return user;
+                })
+                .subscribeOn(schedulers.getBackground())
+                .observeOn(schedulers.getUI());
     }
 
 }

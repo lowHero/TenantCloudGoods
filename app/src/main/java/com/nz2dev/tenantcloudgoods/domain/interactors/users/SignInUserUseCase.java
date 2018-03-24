@@ -6,21 +6,26 @@ import com.nz2dev.tenantcloudgoods.domain.preferences.AccountPreferences;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
+
 /**
  * Created by nz2Dev on 24.03.2018
  */
 @Singleton
 public class SignInUserUseCase {
 
-    private AccountPreferences accountPreferences;
+    private final AccountPreferences accountPreferences;
 
     @Inject
     SignInUserUseCase(AccountPreferences accountPreferences) {
         this.accountPreferences = accountPreferences;
     }
 
-    public void invoke(User user) {
-        accountPreferences.saveExternalId(user.getExternalId());
+    public Single<User> executor(User user) {
+        return Single.create(emitter -> {
+            accountPreferences.saveExternalId(user.getExternalId());
+            emitter.onSuccess(user);
+        });
     }
 
 }

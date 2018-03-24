@@ -1,6 +1,7 @@
 package com.nz2dev.tenantcloudgoods.app.presentation.modules.home.admin;
 
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.BasePresenter;
+import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 import com.nz2dev.tenantcloudgoods.domain.interactors.shops.CreateShopUseCase;
 import com.nz2dev.tenantcloudgoods.domain.interactors.shops.GetAllShopsUseCase;
@@ -15,7 +16,7 @@ import javax.inject.Inject;
  * Created by nz2Dev on 24.03.2018
  */
 @PerFragment
-class AdminHomePresenter extends BasePresenter<AdminHomeView> {
+class AdminHomePresenter extends DisposableBasePresenter<AdminHomeView> {
 
     private final GetAllShopsUseCase getAllShopsUseCase;
     private final CreateShopUseCase createShopUseCase;
@@ -31,13 +32,15 @@ class AdminHomePresenter extends BasePresenter<AdminHomeView> {
     void prepareAdmin(User user) {
         pendingUser = user;
 
-        List<Shop> shops = getAllShopsUseCase.invoke();
-        getView().showAllShops(shops);
+        manage("Getting", getAllShopsUseCase
+                .executor()
+                .subscribe(getView()::showAllShops));
     }
 
     void addShopClick(Shop shop) {
-        createShopUseCase.invoke(shop);
-        getView().showShopAdded(shop);
+        manage("Adding", createShopUseCase
+                .executor(shop)
+                .subscribe(getView()::showShopAdded));
     }
 
     void selectShopClick(Shop shop) {

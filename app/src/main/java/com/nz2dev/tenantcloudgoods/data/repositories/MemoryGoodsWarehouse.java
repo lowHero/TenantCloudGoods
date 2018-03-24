@@ -8,6 +8,8 @@ import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
+
 /**
  * Created by nz2Dev on 24.03.2018
  */
@@ -21,18 +23,20 @@ public class MemoryGoodsWarehouse implements GoodsWarehouse {
     }
 
     @Override
-    public void addGoods(Goods goods) {
+    public Single<Boolean> addGoods(Goods goods) {
         goodsMap.put(goods.getId(), goods);
+        return Single.just(true);
     }
 
     @Override
-    public void updateGoods(Goods goods) {
+    public Single<Boolean> updateGoods(Goods goods) {
         goodsMap.put(goods.getId(), goods);
+        return Single.just(true);
     }
 
     @Override
-    public Goods getGoods(int id) {
-        return goodsMap.get(id);
+    public Single<Goods> getGoods(int id) {
+        return Single.just(goodsMap.get(id));
     }
 
 }

@@ -28,7 +28,7 @@ public class SharedAccountPreferences implements AccountPreferences {
 
     @Override
     public String getExternalId() {
-        return sharedPreferences.getString(KEY_EXTERNAL_ID, null);
+        return sharedPreferences.getString(KEY_EXTERNAL_ID, EMPTY_EXTERNAL_ID);
     }
 
     @Override

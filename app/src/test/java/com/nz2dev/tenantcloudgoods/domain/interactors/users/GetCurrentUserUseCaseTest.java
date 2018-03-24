@@ -5,7 +5,6 @@ import com.nz2dev.tenantcloudgoods.domain.exceptions.UserNotRegisteredException;
 import com.nz2dev.tenantcloudgoods.domain.preferences.AccountPreferences;
 import com.nz2dev.tenantcloudgoods.domain.repositories.UserRepository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +30,7 @@ public class GetCurrentUserUseCaseTest {
 
     @Before
     public void init() {
-        getCurrentUserUseCase = new GetCurrentUserUseCase(userRepository, accountPreferences);
+        getCurrentUserUseCase = new GetCurrentUserUseCase(schedulers, userRepository, accountPreferences);
     }
 
     @Test

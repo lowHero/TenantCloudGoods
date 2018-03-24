@@ -5,6 +5,8 @@ package com.nz2dev.tenantcloudgoods.domain.preferences;
  */
 public interface AccountPreferences {
 
+    String EMPTY_EXTERNAL_ID = "-1";
+
     String getExternalId();
     void saveExternalId(String externalId);
 

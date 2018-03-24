@@ -9,6 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Single;
+
 /**
  * Created by nz2Dev on 24.03.2018
  */
@@ -22,13 +24,14 @@ public class MemoryShopRepository implements ShopRepository {
     }
 
     @Override
-    public void createShop(Shop shop) {
+    public Single<Shop> createShop(Shop shop) {
         shops.add(shop);
+        return Single.just(shop);
     }
 
     @Override
-    public List<Shop> getAllShops() {
-        return shops;
+    public Single<List<Shop>> getAllShops() {
+        return Single.just(new ArrayList<>(shops));
     }
 
 }

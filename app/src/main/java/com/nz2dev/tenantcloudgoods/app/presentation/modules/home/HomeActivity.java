@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
 
-        final User user = getIntent().getParcelableExtra(EXTRA_USER);
+        final User user = (User) getIntent().getSerializableExtra(EXTRA_USER);
 
         getSupportFragmentManager()
                 .beginTransaction()

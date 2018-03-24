@@ -3,20 +3,22 @@ package com.nz2dev.tenantcloudgoods.app.presentation.modules.login;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.BasePresenter;
+import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
+import com.nz2dev.tenantcloudgoods.domain.exceptions.UserNotRegisteredException;
 import com.nz2dev.tenantcloudgoods.domain.interactors.users.GetUserByExternalIdUseCase;
 import com.nz2dev.tenantcloudgoods.domain.interactors.users.RegisterCustomersUseCase;
 import com.nz2dev.tenantcloudgoods.domain.interactors.users.SignInUserUseCase;
-import com.nz2dev.tenantcloudgoods.domain.models.User;
 
 import javax.inject.Inject;
+
+import io.reactivex.Single;
 
 /**
  * Created by nz2Dev on 24.03.2018
  */
 @PerFragment
-public class GoogleSignInPresenter extends BasePresenter<GoogleSignInView> {
+public class GoogleSignInPresenter extends DisposableBasePresenter<GoogleSignInView> {
 
     private GetUserByExternalIdUseCase getUserByExternalIdUseCase;
     private RegisterCustomersUseCase registerCustomersUseCase;
@@ -39,12 +41,17 @@ public class GoogleSignInPresenter extends BasePresenter<GoogleSignInView> {
     }
 
     private void checkAccount(GoogleSignInAccount googleAccount) {
-        User user = getUserByExternalIdUseCase.invoke(googleAccount.getId());
-        if (user == null) {
-            user = registerCustomersUseCase.invoke(googleAccount.getId());
-        }
-        signInUserUseCase.invoke(user);
-        getView().navigateHome(user);
+        manage("Checking", getUserByExternalIdUseCase
+                .executor(googleAccount.getId())
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof UserNotRegisteredException) {
+                        return registerCustomersUseCase.executor(googleAccount.getId());
+                    } else {
+                        return Single.error(throwable);
+                    }
+                })
+                .flatMap(signInUserUseCase::executor)
+                .subscribe(getView()::navigateHome));
     }
 
 }
