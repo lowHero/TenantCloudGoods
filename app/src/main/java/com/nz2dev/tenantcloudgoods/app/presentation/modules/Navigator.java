@@ -2,6 +2,7 @@ package com.nz2dev.tenantcloudgoods.app.presentation.modules;
 
 import android.app.Activity;
 
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.login.GoogleSignInActivity;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 
@@ -15,19 +16,7 @@ public final class Navigator {
     }
 
     public static void navigateHomeFrom(Activity activity, User user) {
-        if (user.isAdmin()) {
-            navigateAdminHomeFrom(activity, user);
-        } else {
-            navigateCustomerHomeFrom(activity, user);
-        }
-    }
-
-    private static void navigateAdminHomeFrom(Activity activity, User user) {
-        throw new RuntimeException("Not implemented!");
-    }
-
-    private static void navigateCustomerHomeFrom(Activity activity, User user) {
-        throw new RuntimeException("Not implemented!");
+        activity.startActivity(HomeActivity.getCallingIntent(activity, user));
     }
 
 }

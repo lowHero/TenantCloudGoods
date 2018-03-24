@@ -7,7 +7,7 @@ import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.BasePresenter
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 import com.nz2dev.tenantcloudgoods.domain.interactors.users.GetUserByExternalIdUseCase;
 import com.nz2dev.tenantcloudgoods.domain.interactors.users.RegisterCustomersUseCase;
-import com.nz2dev.tenantcloudgoods.domain.interactors.users.SignInCurrentUserUseCase;
+import com.nz2dev.tenantcloudgoods.domain.interactors.users.SignInUserUseCase;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 
 import javax.inject.Inject;
@@ -20,13 +20,13 @@ public class GoogleSignInPresenter extends BasePresenter<GoogleSignInView> {
 
     private GetUserByExternalIdUseCase getUserByExternalIdUseCase;
     private RegisterCustomersUseCase registerCustomersUseCase;
-    private SignInCurrentUserUseCase signInCurrentUserUseCase;
+    private SignInUserUseCase signInUserUseCase;
 
     @Inject
-    GoogleSignInPresenter(GetUserByExternalIdUseCase getUserByExternalIdUseCase, RegisterCustomersUseCase registerCustomersUseCase, SignInCurrentUserUseCase signInCurrentUserUseCase) {
+    GoogleSignInPresenter(GetUserByExternalIdUseCase getUserByExternalIdUseCase, RegisterCustomersUseCase registerCustomersUseCase, SignInUserUseCase signInUserUseCase) {
         this.getUserByExternalIdUseCase = getUserByExternalIdUseCase;
         this.registerCustomersUseCase = registerCustomersUseCase;
-        this.signInCurrentUserUseCase = signInCurrentUserUseCase;
+        this.signInUserUseCase = signInUserUseCase;
     }
 
     void handleSignInTask(Task<GoogleSignInAccount> task) {
@@ -43,7 +43,7 @@ public class GoogleSignInPresenter extends BasePresenter<GoogleSignInView> {
         if (user == null) {
             user = registerCustomersUseCase.invoke(googleAccount.getId());
         }
-        signInCurrentUserUseCase.invoke(user);
+        signInUserUseCase.invoke(user);
         getView().navigateHome(user);
     }
 

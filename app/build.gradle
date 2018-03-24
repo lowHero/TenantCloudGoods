@@ -28,6 +28,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$androidSupport_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
+    implementation "com.google.code.gson:gson:$gson_version"
     implementation "javax.inject:javax.inject:$javaInject_version"
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.jakewharton:butterknife:$butterKnife_version"
@@ -40,7 +41,11 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnife_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.assertj:assertj-core:$assertj_version"
+    testImplementation "org.powermock:powermock-module-junit4:$powerMock_version"
+    testImplementation "org.powermock:powermock-api-mockito:$powerMock_version"
+
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }

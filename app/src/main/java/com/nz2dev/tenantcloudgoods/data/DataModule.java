@@ -1,5 +1,9 @@
 package com.nz2dev.tenantcloudgoods.data;
 
+import com.nz2dev.tenantcloudgoods.data.preferences.SharedAccountPreferences;
+import com.nz2dev.tenantcloudgoods.data.repositories.MemoryGoodsWarehouse;
+import com.nz2dev.tenantcloudgoods.data.repositories.MemoryShopRepository;
+import com.nz2dev.tenantcloudgoods.data.repositories.MemoryUserRepository;
 import com.nz2dev.tenantcloudgoods.domain.preferences.AccountPreferences;
 import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
 import com.nz2dev.tenantcloudgoods.domain.repositories.ShopRepository;
@@ -18,26 +22,26 @@ public class DataModule {
 
     @Provides
     @Singleton
-    AccountPreferences provideAccountPreferences() {
-        throw new RuntimeException("Not implemented!");
+    AccountPreferences provideAccountPreferences(SharedAccountPreferences sharedAccountPreferences) {
+        return sharedAccountPreferences;
     }
 
     @Provides
     @Singleton
-    GoodsWarehouse provideGoodsWarehouse() {
-        throw new RuntimeException("Not implemented!");
+    GoodsWarehouse provideGoodsWarehouse(MemoryGoodsWarehouse memoryGoodsWarehouse) {
+        return memoryGoodsWarehouse;
     }
 
     @Provides
     @Singleton
-    ShopRepository provideShopRepository() {
-        throw new RuntimeException("Not implemented!");
+    ShopRepository provideShopRepository(MemoryShopRepository memoryShopRepository) {
+        return memoryShopRepository;
     }
 
     @Provides
     @Singleton
-    UserRepository provideUserRepository() {
-        throw new RuntimeException("Not implemented!");
+    UserRepository provideUserRepository(MemoryUserRepository memoryUserRepository) {
+        return memoryUserRepository;
     }
 
 }

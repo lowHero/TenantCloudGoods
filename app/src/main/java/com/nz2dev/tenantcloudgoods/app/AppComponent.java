@@ -1,5 +1,7 @@
 package com.nz2dev.tenantcloudgoods.app;
 
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.admin.AdminHomeComponent;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.customer.CustomerHomeComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.launch.LaunchActivity;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.login.GoogleSignInComponent;
 import com.nz2dev.tenantcloudgoods.data.DataModule;
@@ -14,6 +16,11 @@ import dagger.Component;
 @Singleton
 @Component(modules = {AppModule.class, DataModule.class})
 public interface AppComponent {
+
     void inject(LaunchActivity launchActivity);
+
     GoogleSignInComponent createGoogleSignInComponent();
+    CustomerHomeComponent createCustomerHomeComponent();
+    AdminHomeComponent createAdminHomeComponent();
+
 }

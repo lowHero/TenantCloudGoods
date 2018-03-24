@@ -10,4 +10,26 @@ public class Goods {
     private String imageUrl;
     private int avaliableAmount;
 
+    public Goods(int id, String name, String imageUrl, int avaliableAmount) {
+        this.id = id;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.avaliableAmount = avaliableAmount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public int getAvaliableAmount() {
+        return avaliableAmount;
+    }
 }

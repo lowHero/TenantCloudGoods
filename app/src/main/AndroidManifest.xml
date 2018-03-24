@@ -2,6 +2,7 @@
     package="com.nz2dev.tenantcloudgoods">
 
     <application
+        android:name=".app.TenantCloudGoodsApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".app.presentation.modules.home.HomeActivity" />
         <activity android:name=".app.presentation.modules.login.GoogleSignInActivity" />
         <activity android:name=".app.presentation.modules.scanning.BarCodeCallerActivity" />
     </application>
