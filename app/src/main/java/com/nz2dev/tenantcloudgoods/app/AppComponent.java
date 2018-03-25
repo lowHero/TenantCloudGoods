@@ -1,5 +1,6 @@
 package com.nz2dev.tenantcloudgoods.app;
 
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout.CheckoutComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.admin.AdminHomeComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.customer.CustomerHomeComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.launch.LaunchActivity;
@@ -27,5 +28,6 @@ public interface AppComponent {
     CustomerHomeComponent createCustomerHomeComponent();
     AdminHomeComponent createAdminHomeComponent();
     CustomerShopComponent createCustomerShopComponent();
+    CheckoutComponent createCheckoutComponent();
 
 }

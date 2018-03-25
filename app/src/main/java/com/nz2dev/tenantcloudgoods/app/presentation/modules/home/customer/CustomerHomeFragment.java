@@ -12,12 +12,11 @@ import android.view.ViewGroup;
 
 import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.Navigator;
-import com.nz2dev.tenantcloudgoods.app.presentation.renderers.ShopRenderer;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.ShopRenderer;
 import com.nz2dev.tenantcloudgoods.app.utils.Dependencies;
 import com.nz2dev.tenantcloudgoods.app.utils.OnItemClickListener;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
-import com.nz2dev.tenantcloudgoods.domain.repositories.ShopRepository;
 import com.pedrogomez.renderers.RVRendererAdapter;
 
 import java.util.List;

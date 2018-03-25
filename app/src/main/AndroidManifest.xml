@@ -21,5 +21,6 @@
         <activity android:name=".app.presentation.modules.login.GoogleSignInActivity" />
         <activity android:name=".app.presentation.modules.scanning.BarCodeCallerActivity" />
         <activity android:name=".app.presentation.modules.shop.ShopActivity" />
+        <activity android:name=".app.presentation.modules.checkout.CheckoutActivity" />
     </application>
 </manifest>

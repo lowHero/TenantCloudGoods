@@ -1,6 +1,7 @@
 package com.nz2dev.tenantcloudgoods.data.tools;
 
 import com.google.gson.Gson;
+import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.GoodsIdentifier;
 import com.nz2dev.tenantcloudgoods.domain.tools.Serializer;
 
@@ -23,6 +24,11 @@ public class JsonSerializer implements Serializer {
     @Override
     public GoodsIdentifier deserializeGoodsIdentifier(String data) {
         return gson.fromJson(data, GoodsIdentifier.class);
+    }
+
+    @Override
+    public String serializeCheckData(Check check) {
+        return gson.toJson(check);
     }
 
 }

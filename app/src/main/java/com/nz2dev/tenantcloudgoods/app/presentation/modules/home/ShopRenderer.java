@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.renderers;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.home;
 
 import android.view.LayoutInflater;
 import android.view.View;

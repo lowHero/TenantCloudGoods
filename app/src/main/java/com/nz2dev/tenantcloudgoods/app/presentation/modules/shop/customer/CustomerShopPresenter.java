@@ -1,12 +1,13 @@
 package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.customer;
 
-import com.google.gson.stream.MalformedJsonException;
+import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentResult;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 import com.nz2dev.tenantcloudgoods.domain.exceptions.GoodsNotFoundException;
-import com.nz2dev.tenantcloudgoods.domain.interactors.goods.GetGoodsByScannedResultUseCase;
-import com.nz2dev.tenantcloudgoods.domain.models.Goods;
+import com.nz2dev.tenantcloudgoods.domain.interactors.orders.CreateCheckUserCase;
+import com.nz2dev.tenantcloudgoods.domain.interactors.orders.CreateOrderByScannedResultUseCase;
+import com.nz2dev.tenantcloudgoods.domain.models.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,15 @@ import static com.nz2dev.tenantcloudgoods.app.utils.ThrowableUtils.handleUncaugh
 @PerFragment
 class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
 
-    private final GetGoodsByScannedResultUseCase getGoodsByScannedResultUseCase;
+    private final CreateOrderByScannedResultUseCase createOrderByScannedResultUseCase;
+    private final CreateCheckUserCase createCheckUserCase;
 
-    private List<Goods> basket = new ArrayList<>();
+    private List<Order> basket = new ArrayList<>();
 
     @Inject
-    CustomerShopPresenter(GetGoodsByScannedResultUseCase getGoodsByScannedResultUseCase) {
-        this.getGoodsByScannedResultUseCase = getGoodsByScannedResultUseCase;
+    CustomerShopPresenter(CreateOrderByScannedResultUseCase createOrderByScannedResultUseCase, CreateCheckUserCase createCheckUserCase) {
+        this.createOrderByScannedResultUseCase = createOrderByScannedResultUseCase;
+        this.createCheckUserCase = createCheckUserCase;
     }
 
     @Override
@@ -46,15 +49,15 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
             getView().showScanningCanceled();
         }
 
-        manage("Scanning", getGoodsByScannedResultUseCase
+        manage("Scanning", createOrderByScannedResultUseCase
                 .executor(intentResult.getContents())
                 .doOnSuccess(basket::add)
-                .subscribe(getView()::showGoods, throwable -> {
+                .subscribe(getView()::showOrder, throwable -> {
                     if (throwable instanceof GoodsNotFoundException) {
                         GoodsNotFoundException e = (GoodsNotFoundException) throwable;
                         getView().showGoodsNotFound(e.getGoodsId());
-                    } else if (throwable instanceof MalformedJsonException) {
-                        getView().showBarcodeUnsupported();
+                    } else if (throwable instanceof JsonSyntaxException) {
+                        getView().showInvalidScanData();
                     } else {
                         handleUncaught(throwable);
                     }
@@ -62,7 +65,9 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
     }
 
     void checkoutClick() {
-        throw new RuntimeException("Not implemented!");
+        manage("Creating", createCheckUserCase
+                .executor(basket)
+                .subscribe(getView()::navigateCheckout));
     }
 
 }
