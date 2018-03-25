@@ -33,12 +33,6 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
         this.createCheckUserCase = createCheckUserCase;
     }
 
-    @Override
-    protected void onViewReady() {
-        super.onViewReady();
-
-    }
-
     void scanClick() {
         // may perform some checks or whatever.
         getView().navigateScanning();
@@ -47,6 +41,7 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
     void handleScanningResult(IntentResult intentResult) {
         if (intentResult.getContents() == null) {
             getView().showScanningCanceled();
+            return;
         }
 
         manage("Scanning", createOrderByScannedResultUseCase

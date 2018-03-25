@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion androidCompileSdk_version
     defaultConfig {
-        applicationId "com.nz2dev.tenantcloudgoods"
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId applicationId
+        minSdkVersion androidMinSdk_version
+        targetSdkVersion androidTargetSdk_version
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner testInstrumentationRunner
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

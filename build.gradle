@@ -47,7 +47,7 @@ ext {
     testApplicationId = 'com.nz2dev.tenantcloudgoods.test'
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     androidCompileSdk_version = 26
-    androidMinSdk_version = 15
+    androidMinSdk_version = 14
     androidTargetSdk_version = 26
     androidBuildTools_version = '26.0.2'
 }
