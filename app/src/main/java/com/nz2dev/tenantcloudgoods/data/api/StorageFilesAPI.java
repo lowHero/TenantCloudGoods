@@ -42,4 +42,8 @@ public class StorageFilesAPI {
         return IOUtils.toStringAndClose(inputStream);
     }
 
+    public boolean isFileExist(String pathToFile) {
+        return new File(context.getFilesDir(), pathToFile).exists();
+    }
+
 }

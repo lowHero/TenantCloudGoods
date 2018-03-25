@@ -29,8 +29,8 @@ public class GetUserByExternalIdUseCase {
     public Single<User> executor(String externalId) {
         return userRepository.getUser(externalId)
                 .map(user -> {
-                    if (user.isEmpty()) {
-                        throw new UserNotRegisteredException();
+                    if (User.isEmptyExternalIdHolder(user)) {
+                        throw new UserNotRegisteredException(user.getExternalId());
                     }
                     return user;
                 })

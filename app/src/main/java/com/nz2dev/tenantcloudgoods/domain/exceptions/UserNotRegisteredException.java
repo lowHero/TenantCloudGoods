@@ -5,7 +5,8 @@ package com.nz2dev.tenantcloudgoods.domain.exceptions;
  */
 public class UserNotRegisteredException extends RuntimeException {
 
-    public UserNotRegisteredException() {
+    public UserNotRegisteredException(String externalId) {
+        super("externalId = " + externalId);
     }
 
 }

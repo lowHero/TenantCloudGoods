@@ -40,8 +40,8 @@ public class GetCurrentUserUseCase {
                 })
                 .flatMap(userRepository::getUser)
                 .map(user -> {
-                    if (user.isEmpty()) {
-                        throw new UserNotRegisteredException();
+                    if (User.isEmptyExternalIdHolder(user)) {
+                        throw new UserNotRegisteredException(user.getExternalId());
                     }
                     return user;
                 })

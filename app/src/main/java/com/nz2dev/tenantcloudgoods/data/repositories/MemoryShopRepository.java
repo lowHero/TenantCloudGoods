@@ -1,9 +1,11 @@
 package com.nz2dev.tenantcloudgoods.data.repositories;
 
+import com.nz2dev.tenantcloudgoods.data.api.StorageFilesAPI;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.repositories.ShopRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,21 +19,47 @@ import io.reactivex.Single;
 @Singleton
 public class MemoryShopRepository implements ShopRepository {
 
-    private List<Shop> shops = new ArrayList<>();
+    private List<Shop> shops;
+    private StorageFilesAPI storageFilesAPI;
 
     @Inject
-    public MemoryShopRepository() {
+    public MemoryShopRepository(StorageFilesAPI storageFilesAPI) {
+        this.storageFilesAPI = storageFilesAPI;
     }
 
     @Override
     public Single<Shop> createShop(Shop shop) {
-        shops.add(shop);
-        return Single.just(shop);
+        return Single.create(emitter -> {
+            shops.add(shop);
+            save();
+            emitter.onSuccess(shop);
+        });
     }
 
     @Override
     public Single<List<Shop>> getAllShops() {
-        return Single.just(new ArrayList<>(shops));
+        return Single.create(emitter -> {
+            preload();
+            emitter.onSuccess(new ArrayList<>(shops));
+        });
+    }
+
+    private void save() {
+        // TODO implement.
+    }
+
+    private void preload() {
+        if (shops == null) {
+            shops = new ArrayList<>();
+            shops.addAll(preloadPredefinedShops());
+        }
+    }
+
+    private List<Shop> preloadPredefinedShops() {
+        return Arrays.asList(
+                new Shop(1, "Shop1"),
+                new Shop(2, "Shop2")
+        );
     }
 
 }

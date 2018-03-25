@@ -1,5 +1,6 @@
 package com.nz2dev.tenantcloudgoods.device;
 
+import com.nz2dev.tenantcloudgoods.device.execution.AndroidSchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 
 import javax.inject.Singleton;

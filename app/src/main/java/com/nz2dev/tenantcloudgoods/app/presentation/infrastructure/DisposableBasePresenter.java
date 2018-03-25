@@ -12,7 +12,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * Created by nz2Dev on 24.03.2018
  */
-public class DisposableBasePresenter<V> extends BasePresenter<V> {
+public abstract class DisposableBasePresenter<V> extends BasePresenter<V> {
 
     private CompositeDisposable compositeDisposable;
     private Map<Integer, Disposable> disposablesMap;

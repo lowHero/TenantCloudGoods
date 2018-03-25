@@ -42,7 +42,7 @@ public class GoogleSignInPresenter extends DisposableBasePresenter<GoogleSignInV
 
     private void checkAccount(GoogleSignInAccount googleAccount) {
         manage("Checking", getUserByExternalIdUseCase
-                .executor(googleAccount.getId())
+                .executor(googleAccount.getEmail())
                 .onErrorResumeNext(throwable -> {
                     if (throwable instanceof UserNotRegisteredException) {
                         return registerCustomersUseCase.executor(googleAccount.getId());

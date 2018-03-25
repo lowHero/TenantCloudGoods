@@ -7,10 +7,16 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    public static final User EMPTY = new User(0, null, false);
-
     public static User createCustomer(String externalId) {
-        return new User(0, externalId, false);
+        return new User(-1, externalId, false);
+    }
+
+    public static User createEmptyExternalIdHolder(String externalId) {
+        return new User(-2, externalId, false);
+    }
+
+    public static boolean isEmptyExternalIdHolder(User user) {
+        return user.id == -2;
     }
 
     private int id;
@@ -33,10 +39,6 @@ public class User implements Serializable {
 
     public boolean isAdmin() {
         return admin;
-    }
-
-    public boolean isEmpty() {
-        return this.equals(EMPTY);
     }
 
     @Override
