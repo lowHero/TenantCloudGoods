@@ -1,6 +1,7 @@
 package com.nz2dev.tenantcloudgoods.domain.tools;
 
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
+import com.nz2dev.tenantcloudgoods.domain.models.Goods;
 import com.nz2dev.tenantcloudgoods.domain.models.GoodsIdentifier;
 
 /**
@@ -9,6 +10,7 @@ import com.nz2dev.tenantcloudgoods.domain.models.GoodsIdentifier;
 public interface Serializer {
 
     GoodsIdentifier deserializeGoodsIdentifier(String data);
+    Goods deserializeGoods(String data);
     String serializeCheckData(Check check);
 
 }

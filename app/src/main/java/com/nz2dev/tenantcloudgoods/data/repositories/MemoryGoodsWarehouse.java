@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import com.nz2dev.tenantcloudgoods.domain.models.Goods;
 import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -27,9 +29,9 @@ public class MemoryGoodsWarehouse implements GoodsWarehouse {
     }
 
     @Override
-    public Single<Boolean> addGoods(Goods goods) {
+    public Single<Goods> add(Goods goods) {
         goodsMap.put(goods.getId(), goods);
-        return Single.just(true);
+        return Single.just(goods);
     }
 
     @Override
@@ -44,6 +46,14 @@ public class MemoryGoodsWarehouse implements GoodsWarehouse {
             preload();
             Goods goods = goodsMap.get(id);
             emitter.onSuccess(goods != null ? goods : Goods.emptyIdHolder(id));
+        });
+    }
+
+    @Override
+    public Single<List<Goods>> getAllGoods() {
+        return Single.create(emitter -> {
+            preload();
+            emitter.onSuccess(new ArrayList<>(goodsMap.values()));
         });
     }
 

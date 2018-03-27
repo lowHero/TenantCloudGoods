@@ -7,6 +7,17 @@ import java.io.Serializable;
  */
 public class Goods implements Serializable {
 
+    public static Goods empty() {
+        return new Goods(-1, null, null, -1f, -1);
+    }
+
+    public static boolean isEmpty(Goods goods) {
+        return goods.id == -1
+                && goods.imageUrl == null
+                && Float.compare(-1f, goods.getPrice()) == 0
+                && goods.availableAmount == -1;
+    }
+
     public static Goods emptyIdHolder(int id) {
         return new Goods(id, null, null, -1f, -1);
     }

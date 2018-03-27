@@ -40,7 +40,7 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
         pendingShop = shop;
     }
 
-    void handleScanningResult(String result) {
+    void handleScannedResult(String result) {
         manage("Scanning", createOrderByScannedResultUseCase
                 .executor(result)
                 .subscribe(order -> {

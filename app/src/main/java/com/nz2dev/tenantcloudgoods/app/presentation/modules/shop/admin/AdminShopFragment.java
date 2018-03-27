@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.customer;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.admin;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,21 +13,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nz2dev.tenantcloudgoods.R;
-import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.OrderRenderer;
-import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout.CheckoutFragment;
 import com.nz2dev.tenantcloudgoods.app.utils.Dependencies;
-import com.nz2dev.tenantcloudgoods.app.utils.RVRendererAdapterUtils;
-import com.nz2dev.tenantcloudgoods.domain.models.Check;
-import com.nz2dev.tenantcloudgoods.domain.models.Order;
+import com.nz2dev.tenantcloudgoods.domain.models.Goods;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 import com.pedrogomez.renderers.RVRendererAdapter;
 
-import java.util.Locale;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,46 +32,43 @@ import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static java.lang.String.format;
-import static java.util.Locale.getDefault;
 
 /**
- * Created by nz2Dev on 25.03.2018
+ * Created by nz2Dev on 27.03.2018
  */
-public class CustomerShopFragment extends Fragment implements CustomerShopView, OrderRenderer.OrderActionListener {
+public class AdminShopFragment extends Fragment implements AdminShopView {
 
     private static final int RQ_SCANNING = 0x00000000;
 
-    public static CustomerShopFragment newInstance(Shop shop, User user) {
+    public static AdminShopFragment newInstance(Shop shop, User user) {
         Bundle args = new Bundle();
         args.putSerializable(shop.getClass().getName(), shop);
         args.putSerializable(user.getClass().getName(), user);
 
-        CustomerShopFragment fragment = new CustomerShopFragment();
+        AdminShopFragment fragment = new AdminShopFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.tv_possible_check_price) TextView possibleCheckPriceText;
-    @BindView(R.id.rv_basket) RecyclerView basketList;
+    @BindView(R.id.rv_available_orders_list) RecyclerView availableOrdersList;
 
-    @Inject CustomerShopPresenter presenter;
-    private RVRendererAdapter<Order> adapter;
+    @Inject AdminShopPresenter presenter;
+    private RVRendererAdapter<Goods> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Dependencies.fromApplication(getContext())
-                .createCustomerShopComponent()
+                .createAdminShopComponent()
                 .inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shop_customer, container, false);
+        return inflater.inflate(R.layout.fragment_shop_admin, container, false);
     }
 
     @Override
@@ -90,12 +82,10 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        adapter = OrderRenderer.createAdapter(this);
-        basketList.setAdapter(adapter);
+        adapter = GoodsRenderer.createAdapter();
+        availableOrdersList.setAdapter(adapter);
 
-        Shop shopFromArguments = (Shop) getArguments().getSerializable(Shop.class.getName());
         presenter.setView(this);
-        presenter.prepare(shopFromArguments);
     }
 
     @Override
@@ -128,18 +118,8 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
         }
     }
 
-    @Override
-    public void onOrderAmountChanged(Order order, int amount) {
-        presenter.changeGoodsAmountInOrderClick(order, amount);
-    }
-
-    @Override
-    public void onOrderDeleted(Order order) {
-        presenter.deleteOrderFromBasket(order);
-    }
-
-    @OnClick(R.id.btn_scan_for_goods_identify)
-    public void onScanGoodsIdentifyClick() {
+    @OnClick(R.id.iv_create_goods)
+    public void onScannGoodsClick() {
         try {
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
             intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
@@ -151,50 +131,16 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
         }
     }
 
-    @OnClick(R.id.btn_checkout)
-    public void onCheckoutClick() {
-        presenter.checkoutClick();
+    @Override
+    public void showGoods(List<Goods> goods) {
+        adapter.clear();
+        adapter.addAll(goods);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showError(int templateId, Object... templateParams) {
-        String text = String.format(Locale.getDefault(), getContext().getString(templateId), templateParams);
-        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showPossibleCheckPrice(float price) {
-        possibleCheckPriceText.setText(format(getDefault(), "%.1f$", price));
-    }
-
-    @Override
-    public void showOrder(Order order) {
-        adapter.add(order);
+    public void showNewGoods(Goods goods) {
+        adapter.add(goods);
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
     }
-
-    @Override
-    public void showOrderUpdates(Order order) {
-        int orderPosition = RVRendererAdapterUtils.findIndexOf(order, adapter);
-        Order orderInAdapter = adapter.getItem(orderPosition);
-        orderInAdapter.set(order);
-        adapter.notifyItemChanged(orderPosition);
-    }
-
-    @Override
-    public void showOrderDeleted(Order orderToDelete) {
-        int orderPosition = RVRendererAdapterUtils.findIndexOf(orderToDelete, adapter);
-        adapter.remove(adapter.getItem(orderPosition));
-        adapter.notifyItemRemoved(orderPosition);
-    }
-
-    @Override
-    public void navigateCheckout(Check check) {
-        getFragmentManager().beginTransaction()
-                .hide(this)
-                .add(R.id.fl_activity_content, CheckoutFragment.newInstance(check))
-                .addToBackStack(null)
-                .commit();
-    }
-
 }

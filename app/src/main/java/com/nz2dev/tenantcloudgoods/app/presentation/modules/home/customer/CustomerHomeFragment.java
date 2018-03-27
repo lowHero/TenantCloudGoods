@@ -68,7 +68,6 @@ public class CustomerHomeFragment extends Fragment implements CustomerHomeView, 
 
         adapter = ShopRenderer.createAdapterInstance(this);
         shopsList.setAdapter(adapter);
-        shopsList.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         presenter.setView(this);
         presenter.prepareCustomer((User) getArguments().getSerializable(User.class.getName()));
@@ -83,6 +82,11 @@ public class CustomerHomeFragment extends Fragment implements CustomerHomeView, 
     @Override
     public void onItemClick(Shop item) {
         presenter.shopClick(item);
+    }
+
+    @OnClick(R.id.iv_account_exit)
+    public void onAccountExitClick() {
+        Navigator.navigateAuthorizationFrom(getActivity());
     }
 
     @OnClick(R.id.iv_go_history)

@@ -26,8 +26,8 @@ public final class Navigator {
         activity.startActivity(PaymentHistoryActivity.getCallingIntent(activity));
     }
 
-    public static void navigateShopFrom(Activity activity, Shop shop, User customer) {
-        activity.startActivity(ShopActivity.getCallingIntent(activity, shop, customer));
+    public static void navigateShopFrom(Activity activity, Shop shop, User user) {
+        activity.startActivity(ShopActivity.getCallingIntent(activity, shop, user));
     }
 
 }

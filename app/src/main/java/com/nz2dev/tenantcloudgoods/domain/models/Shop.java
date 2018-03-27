@@ -7,6 +7,10 @@ import java.io.Serializable;
  */
 public class Shop implements Serializable {
 
+    public static Shop createFromName(String name) {
+        return new Shop(-1, name);
+    }
+
     private int id;
     private String name;
 

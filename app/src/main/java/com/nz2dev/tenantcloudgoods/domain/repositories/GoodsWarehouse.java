@@ -2,6 +2,8 @@ package com.nz2dev.tenantcloudgoods.domain.repositories;
 
 import com.nz2dev.tenantcloudgoods.domain.models.Goods;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 /**
@@ -9,8 +11,9 @@ import io.reactivex.Single;
  */
 public interface GoodsWarehouse {
 
-    Single<Boolean> addGoods(Goods goods);
+    Single<Goods> add(Goods goods);
     Single<Boolean> updateGoods(Goods goods);
     Single<Goods> getGoods(int id);
+    Single<List<Goods>> getAllGoods();
 
 }

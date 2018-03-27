@@ -25,8 +25,8 @@ public class CreateShopUseCase {
         this.shopRepository = shopRepository;
     }
 
-    public Single<Shop> executor(Shop shop) {
-        return shopRepository.createShop(shop)
+    public Single<Shop> executor(String name) {
+        return shopRepository.createShop(Shop.createFromName(name))
                 .subscribeOn(schedulers.getBackground())
                 .observeOn(schedulers.getUI());
     }

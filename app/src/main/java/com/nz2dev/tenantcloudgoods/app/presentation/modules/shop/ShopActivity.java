@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nz2dev.tenantcloudgoods.R;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.admin.AdminShopFragment;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.customer.CustomerShopFragment;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
@@ -31,7 +32,9 @@ public class ShopActivity extends AppCompatActivity {
         User user = (User) getIntent().getSerializableExtra(User.class.getName());
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_activity_content, CustomerShopFragment.newInstance(shop, user))
+                .replace(R.id.fl_activity_content, user.isAdmin()
+                        ? AdminShopFragment.newInstance(shop, user)
+                        : CustomerShopFragment.newInstance(shop, user))
                 .commit();
     }
 

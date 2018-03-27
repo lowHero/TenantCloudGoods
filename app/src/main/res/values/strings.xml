@@ -27,5 +27,7 @@
     <string name="error_goods_not_found">Goods with id %d not found.</string>
     <string name="error_invalid_scan_data">Invalid data!</string>
     <string name="title_payment_history">Payment history</string>
+    <string name="hint_eneter_shop_name">Enter shop name:</string>
+    <string name="text_ok">Ok</string>
 
 </resources>
