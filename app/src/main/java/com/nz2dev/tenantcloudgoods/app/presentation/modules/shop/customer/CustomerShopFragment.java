@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.Navigator;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.OrderRenderer;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout.CheckoutFragment;
 import com.nz2dev.tenantcloudgoods.app.utils.Dependencies;
 import com.nz2dev.tenantcloudgoods.app.utils.RVRendererAdapterUtils;
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
@@ -26,6 +27,8 @@ import com.nz2dev.tenantcloudgoods.domain.models.Order;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 import com.pedrogomez.renderers.RVRendererAdapter;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -91,7 +94,9 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
         adapter = OrderRenderer.createAdapter(this);
         basketList.setAdapter(adapter);
 
+        Shop shopFromArguments = (Shop) getArguments().getSerializable(Shop.class.getName());
         presenter.setView(this);
+        presenter.prepare(shopFromArguments);
     }
 
     @Override
@@ -119,7 +124,7 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
                 presenter.handleScanningResult(contents);
             }
             if (resultCode == RESULT_CANCELED) {
-                showError("Scanning canceled");
+                Toast.makeText(getContext(), "Scanning canceled", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -153,6 +158,12 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
     }
 
     @Override
+    public void showError(int templateId, Object... templateParams) {
+        String text = String.format(Locale.getDefault(), getContext().getString(templateId), templateParams);
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showPossibleCheckPrice(float price) {
         possibleCheckPriceText.setText(format(getDefault(), "%.1f$", price));
     }
@@ -179,28 +190,11 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
     }
 
     @Override
-    public void showOrderAlreadyExist() {
-        // may scroll recycler view onto specific position where order is located
-        showError("order is already exist");
-    }
-
-    @Override
-    public void showGoodsNotFound(int goodsId) {
-        showError("goods: " + goodsId + " not found");
-    }
-
-    @Override
-    public void showInvalidScanData() {
-        showError("Invalid data!");
-    }
-
-    @Override
     public void navigateCheckout(Check check) {
-        Navigator.navigateCheckoutFrom(getActivity(), check);
-    }
-
-    private void showError(String text) {
-        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fl_activity_content, CheckoutFragment.newInstance(check))
+                .addToBackStack(null)
+                .commit();
     }
 
 }

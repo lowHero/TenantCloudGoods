@@ -23,5 +23,9 @@
     <string name="title_scan">Scan</string>
     <string name="error_fail_to_generate_check_data">Fail to serialize check data</string>
     <string name="action_confirm">Confirm</string>
+    <string name="error_order_already_exist">Order is already exist in basket</string>
+    <string name="error_goods_not_found">Goods with id %d not found.</string>
+    <string name="error_invalid_scan_data">Invalid data!</string>
+    <string name="title_payment_history">Payment history</string>
 
 </resources>

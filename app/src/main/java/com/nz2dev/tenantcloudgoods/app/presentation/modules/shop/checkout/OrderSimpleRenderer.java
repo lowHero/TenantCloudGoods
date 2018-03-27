@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -3,6 +3,7 @@ package com.nz2dev.tenantcloudgoods.domain.interactors.orders;
 import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;
+import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 
 import java.util.List;
 
@@ -24,14 +25,14 @@ public class CreateCheckUserCase {
         this.schedulers = schedulers;
     }
 
-    public Single<Check> executor(List<Order> orderList) {
+    public Single<Check> executor(Shop shop, List<Order> orderList) {
         return Single.just(orderList)
                 .map(orders -> {
                     float totalAmount = 0;
                     for (Order order : orders) {
                         totalAmount += order.getGoodsAmount() * order.getGoods().getPrice();
                     }
-                    return new Check(orders, totalAmount);
+                    return new Check(shop, orders, totalAmount);
                 })
                 .subscribeOn(schedulers.getBackground())
                 .observeOn(schedulers.getUI());

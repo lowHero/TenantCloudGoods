@@ -1,12 +1,15 @@
 package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.customer;
 
 import com.google.gson.JsonSyntaxException;
+import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 import com.nz2dev.tenantcloudgoods.domain.exceptions.GoodsNotFoundException;
 import com.nz2dev.tenantcloudgoods.domain.interactors.orders.CreateCheckUserCase;
 import com.nz2dev.tenantcloudgoods.domain.interactors.orders.CreateOrderByScannedResultUseCase;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;
+import com.nz2dev.tenantcloudgoods.domain.models.Shop;
+import com.nz2dev.tenantcloudgoods.domain.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +28,16 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
     private final CreateCheckUserCase createCheckUserCase;
 
     private List<Order> basket = new ArrayList<>();
+    private Shop pendingShop;
 
     @Inject
     CustomerShopPresenter(CreateOrderByScannedResultUseCase createOrderByScannedResultUseCase, CreateCheckUserCase createCheckUserCase) {
         this.createOrderByScannedResultUseCase = createOrderByScannedResultUseCase;
         this.createCheckUserCase = createCheckUserCase;
+    }
+
+    void prepare(Shop shop) {
+        pendingShop = shop;
     }
 
     void handleScanningResult(String result) {
@@ -38,7 +46,7 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
                 .subscribe(order -> {
                     for (Order orderInBasket : basket) {
                         if (orderInBasket.getGoods().equals(order.getGoods())) {
-                            getView().showOrderAlreadyExist();
+                            getView().showError(R.string.error_order_already_exist);
                             return;
                         }
                     }
@@ -49,9 +57,9 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
                 }, throwable -> {
                     if (throwable instanceof GoodsNotFoundException) {
                         GoodsNotFoundException e = (GoodsNotFoundException) throwable;
-                        getView().showGoodsNotFound(e.getGoodsId());
+                        getView().showError(R.string.error_goods_not_found, e.getGoodsId());
                     } else if (throwable instanceof JsonSyntaxException) {
-                        getView().showInvalidScanData();
+                        getView().showError(R.string.error_invalid_scan_data);
                     } else {
                         handleUncaught(throwable);
                     }
@@ -78,7 +86,7 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
 
     void checkoutClick() {
         manage("Creating", createCheckUserCase
-                .executor(basket)
+                .executor(pendingShop, basket)
                 .subscribe(getView()::navigateCheckout));
     }
 

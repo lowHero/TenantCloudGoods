@@ -8,20 +8,26 @@ import java.util.List;
  */
 public class Check implements Serializable {
 
+    private Shop shop;
     private List<Order> orders;
-    private float amount;
+    private float price;
 
-    public Check(List<Order> orders, float amount) {
+    public Check(Shop shop, List<Order> orders, float price) {
+        this.shop = shop;
         this.orders = orders;
-        this.amount = amount;
+        this.price = price;
+    }
+
+    public Shop getShop() {
+        return shop;
     }
 
     public List<Order> getOrders() {
         return orders;
     }
 
-    public float getAmount() {
-        return amount;
+    public float getPrice() {
+        return price;
     }
 
 }

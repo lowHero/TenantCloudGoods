@@ -69,7 +69,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#32534c4c" />
+            android:background="@color/colorSeparator" />
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_quantity_remove"

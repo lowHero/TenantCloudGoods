@@ -2,12 +2,10 @@ package com.nz2dev.tenantcloudgoods.app.presentation.modules;
 
 import android.app.Activity;
 
-import com.nz2dev.tenantcloudgoods.R;
-import com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout.CheckoutActivity;
-import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.auth.AuthorizationActivity;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.history.PaymentHistoryActivity;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.HomeActivity;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.ShopActivity;
-import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.models.User;
 
@@ -24,12 +22,12 @@ public final class Navigator {
         activity.startActivity(HomeActivity.getCallingIntent(activity, user));
     }
 
-    public static void navigateShopFrom(Activity activity, Shop shop, User customer) {
-        activity.startActivity(ShopActivity.getCallingIntent(activity, shop, customer));
+    public static void navigatePaymentHistoryFrom(Activity activity) {
+        activity.startActivity(PaymentHistoryActivity.getCallingIntent(activity));
     }
 
-    public static void navigateCheckoutFrom(Activity activity, Check check) {
-        activity.startActivity(CheckoutActivity.getCallingIntent(activity, check));
+    public static void navigateShopFrom(Activity activity, Shop shop, User customer) {
+        activity.startActivity(ShopActivity.getCallingIntent(activity, shop, customer));
     }
 
 }

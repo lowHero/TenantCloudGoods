@@ -2,7 +2,8 @@ package com.nz2dev.tenantcloudgoods.app;
 
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.auth.signin.SignInComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.auth.signup.SignUpComponent;
-import com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout.CheckoutComponent;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout.CheckoutComponent;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.history.PaymentHistoryComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.admin.AdminHomeComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.home.customer.CustomerHomeComponent;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.customer.CustomerShopComponent;
@@ -25,5 +26,6 @@ public interface AppComponent {
     AdminHomeComponent createAdminHomeComponent();
     CustomerShopComponent createCustomerShopComponent();
     CheckoutComponent createCheckoutComponent();
+    PaymentHistoryComponent createPaymentHistoryComponent();
 
 }

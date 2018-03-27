@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout.scan;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,10 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nz2dev.tenantcloudgoods.R;
+import com.nz2dev.tenantcloudgoods.app.presentation.modules.Navigator;
 import com.nz2dev.tenantcloudgoods.app.utils.QRCodeHelper;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by nz2Dev on 27.03.2018
@@ -60,6 +58,8 @@ public class CheckoutScanFragment extends Fragment {
         String serializedCheckData = getArguments().getString(KEY_CHECK_DATA);
         ImageView checkQRCodeImage = view.findViewById(R.id.iv_check_qr_code);
         checkQRCodeImage.setImageBitmap(QRCodeHelper.encodeToBitmap(serializedCheckData, 512, 512));
+
+        view.findViewById(R.id.btn_ok).setOnClickListener(v -> activity.finish());
     }
 
     @Override

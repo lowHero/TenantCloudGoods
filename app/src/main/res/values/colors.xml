@@ -6,4 +6,5 @@
 
     <color name="colorItemSelected">#32383634</color>
     <color name="colorTextSecondary">#b78b8787</color>
+    <color name="colorSeparator">#32534c4c</color>
 </resources>

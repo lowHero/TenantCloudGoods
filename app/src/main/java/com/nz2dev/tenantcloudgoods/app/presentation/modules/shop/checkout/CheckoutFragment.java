@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nz2dev.tenantcloudgoods.R;
-import com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout.scan.CheckoutScanFragment;
 import com.nz2dev.tenantcloudgoods.app.utils.Dependencies;
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;

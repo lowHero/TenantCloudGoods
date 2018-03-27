@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.modules.checkout;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout;
 
 import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
@@ -31,7 +31,7 @@ class CheckoutPresenter extends DisposableBasePresenter<CheckoutView> {
 
     void prepare(Check check) {
         pendingCheck = check;
-        getView().showCheckAmount(check.getAmount());
+        getView().showCheckAmount(check.getPrice());
         getView().showCheckOrders(check.getOrders());
     }
 

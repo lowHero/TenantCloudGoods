@@ -2,12 +2,14 @@ package com.nz2dev.tenantcloudgoods.data;
 
 import com.google.gson.Gson;
 import com.nz2dev.tenantcloudgoods.data.preferences.SharedAccountPreferences;
+import com.nz2dev.tenantcloudgoods.data.repositories.DeviceStoragePaymentHistory;
 import com.nz2dev.tenantcloudgoods.data.repositories.DeviceStorageUserRepository;
 import com.nz2dev.tenantcloudgoods.data.repositories.MemoryGoodsWarehouse;
 import com.nz2dev.tenantcloudgoods.data.repositories.MemoryShopRepository;
 import com.nz2dev.tenantcloudgoods.data.tools.JsonSerializer;
 import com.nz2dev.tenantcloudgoods.domain.preferences.AccountPreferences;
 import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
+import com.nz2dev.tenantcloudgoods.domain.repositories.PaymentHistory;
 import com.nz2dev.tenantcloudgoods.domain.repositories.ShopRepository;
 import com.nz2dev.tenantcloudgoods.domain.repositories.UserRepository;
 import com.nz2dev.tenantcloudgoods.domain.tools.Serializer;
@@ -57,6 +59,12 @@ public class DataModule {
     @Singleton
     UserRepository provideUserRepository(DeviceStorageUserRepository deviceStorageUserRepository) {
         return deviceStorageUserRepository;
+    }
+
+    @Provides
+    @Singleton
+    PaymentHistory providePaymentHistory(DeviceStoragePaymentHistory deviceStoragePaymentHistory) {
+        return deviceStoragePaymentHistory;
     }
 
 }

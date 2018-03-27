@@ -25,6 +25,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by nz2Dev on 24.03.2018
@@ -82,6 +83,11 @@ public class CustomerHomeFragment extends Fragment implements CustomerHomeView, 
     @Override
     public void onItemClick(Shop item) {
         presenter.shopClick(item);
+    }
+
+    @OnClick(R.id.iv_go_history)
+    public void onGoHistoryClick() {
+        Navigator.navigatePaymentHistoryFrom(getActivity());
     }
 
     @Override

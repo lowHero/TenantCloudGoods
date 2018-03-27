@@ -20,6 +20,6 @@
         </activity>
         <activity android:name=".app.presentation.modules.home.HomeActivity" />
         <activity android:name=".app.presentation.modules.shop.ShopActivity" />
-        <activity android:name=".app.presentation.modules.checkout.CheckoutActivity" />
+        <activity android:name=".app.presentation.modules.history.PaymentHistoryActivity" />
     </application>
 </manifest>
