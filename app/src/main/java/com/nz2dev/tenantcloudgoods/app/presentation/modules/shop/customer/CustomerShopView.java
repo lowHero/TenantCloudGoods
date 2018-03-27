@@ -9,12 +9,14 @@ import com.nz2dev.tenantcloudgoods.domain.models.Order;
  */
 interface CustomerShopView {
 
+    void showPossibleCheckPrice(float price);
     void showOrder(Order order);
-    void showScanningCanceled();
+    void showOrderUpdates(Order order);
+    void showOrderDeleted(Order orderToDelete);
+    void showOrderAlreadyExist();
     void showGoodsNotFound(int goodsId);
     void showInvalidScanData();
 
-    void navigateScanning();
     void navigateCheckout(Check check);
 
 }

@@ -38,7 +38,10 @@ public class CreateOrderByScannedResultUseCase {
                     if (Goods.isEmptyIdHolder(goods)) {
                         throw new GoodsNotFoundException(goods.getId());
                     }
-                    return Order.createSingle(goods);
+
+                    Order order = Order.createSingle(goods);
+                    order.setTotalPrice(order.getGoods().getPrice() * order.getGoodsAmount());
+                    return order;
                 })
                 .subscribeOn(schedulers.getBackground())
                 .observeOn(schedulers.getUI());

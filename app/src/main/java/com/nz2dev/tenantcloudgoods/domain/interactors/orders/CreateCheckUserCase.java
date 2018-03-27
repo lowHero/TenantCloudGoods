@@ -1,10 +1,8 @@
 package com.nz2dev.tenantcloudgoods.domain.interactors.orders;
 
-import com.nz2dev.tenantcloudgoods.domain.exceptions.CheckDataGenerationException;
 import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;
-import com.nz2dev.tenantcloudgoods.domain.tools.Serializer;
 
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class CreateCheckUserCase {
                 .map(orders -> {
                     float totalAmount = 0;
                     for (Order order : orders) {
-                        totalAmount += order.getAmount() * order.getGoods().getPrice();
+                        totalAmount += order.getGoodsAmount() * order.getGoods().getPrice();
                     }
                     return new Check(orders, totalAmount);
                 })

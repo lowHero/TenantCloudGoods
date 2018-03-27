@@ -17,5 +17,11 @@
     <string name="user_role_customer">Customer</string>
     <string name="user_role_admin">Admin</string>
     <string name="text_or">Or</string>
+    <string name="question_are_you_shore">Are you sure?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+    <string name="title_scan">Scan</string>
+    <string name="error_fail_to_generate_check_data">Fail to serialize check data</string>
+    <string name="action_confirm">Confirm</string>
 
 </resources>

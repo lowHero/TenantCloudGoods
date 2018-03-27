@@ -1,7 +1,6 @@
 package com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.customer;
 
 import com.google.gson.JsonSyntaxException;
-import com.google.zxing.integration.android.IntentResult;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 import com.nz2dev.tenantcloudgoods.domain.exceptions.GoodsNotFoundException;
@@ -33,21 +32,21 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
         this.createCheckUserCase = createCheckUserCase;
     }
 
-    void scanClick() {
-        // may perform some checks or whatever.
-        getView().navigateScanning();
-    }
-
-    void handleScanningResult(IntentResult intentResult) {
-        if (intentResult.getContents() == null) {
-            getView().showScanningCanceled();
-            return;
-        }
-
+    void handleScanningResult(String result) {
         manage("Scanning", createOrderByScannedResultUseCase
-                .executor(intentResult.getContents())
-                .doOnSuccess(basket::add)
-                .subscribe(getView()::showOrder, throwable -> {
+                .executor(result)
+                .subscribe(order -> {
+                    for (Order orderInBasket : basket) {
+                        if (orderInBasket.getGoods().equals(order.getGoods())) {
+                            getView().showOrderAlreadyExist();
+                            return;
+                        }
+                    }
+
+                    basket.add(order);
+                    getView().showOrder(order);
+                    getView().showPossibleCheckPrice(calculatePossibleCheckPrice());
+                }, throwable -> {
                     if (throwable instanceof GoodsNotFoundException) {
                         GoodsNotFoundException e = (GoodsNotFoundException) throwable;
                         getView().showGoodsNotFound(e.getGoodsId());
@@ -59,10 +58,36 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
                 }));
     }
 
+    void changeGoodsAmountInOrderClick(Order order, int goodsAmount) {
+        // In this stage is possible to call some useCase that will calculate some discounts
+        // or check if there enough amount etc.
+        // But for now make it simple.
+        if (order.getGoods().getAvailableAmount() > goodsAmount && goodsAmount >= 1) {
+            order.setGoodsAmount(goodsAmount);
+            order.setTotalPrice(order.getGoods().getPrice() * goodsAmount);
+
+            getView().showOrderUpdates(order);
+            getView().showPossibleCheckPrice(calculatePossibleCheckPrice());
+        }
+    }
+
+    void deleteOrderFromBasket(Order orderToDelete) {
+        basket.remove(orderToDelete);
+        getView().showOrderDeleted(orderToDelete);
+    }
+
     void checkoutClick() {
         manage("Creating", createCheckUserCase
                 .executor(basket)
                 .subscribe(getView()::navigateCheckout));
+    }
+
+    private float calculatePossibleCheckPrice() {
+        float totalCheckPrice = 0f;
+        for (Order orderToCalculate : basket) {
+            totalCheckPrice += orderToCalculate.getTotalPrice();
+        }
+        return totalCheckPrice;
     }
 
 }
