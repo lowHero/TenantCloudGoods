@@ -16,22 +16,22 @@ import static org.mockito.Mockito.verify;
  * Created by nz2Dev on 24.03.2018
  */
 @RunWith(MockitoJUnitRunner.class)
-public class RegisterCustomersUseCaseTest {
+public class RegisterUserUseCaseTest {
 
     @Mock private UserRepository userRepository;
 
-    private RegisterCustomersUseCase registerCustomersUseCase;
+    private RegisterUserUseCase registerUserUseCase;
 
     @Before
     public void setUp() throws Exception {
-        registerCustomersUseCase = new RegisterCustomersUseCase(schedulers, userRepository);
+        registerUserUseCase = new RegisterUserUseCase(schedulers, userRepository);
     }
 
     @Test
     public void invoke_WithProperExternalId_ShouldAddUserToRepositoryWithTheSameExternalId() throws Exception {
         final String externalId = "1";
 
-        registerCustomersUseCase.invoke(externalId);
+        registerUserUseCase.invoke(externalId);
 
         verify(userRepository).addUser(User.createCustomer(externalId));
     }

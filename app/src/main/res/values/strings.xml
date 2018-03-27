@@ -3,4 +3,19 @@
 
     <string name="action_add">Add</string>
     <string name="action_checkout">Pay</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_change">Change</string>
+
+    <string name="title_tenant_cloud_sign_up">Sign Up into TenantCloud</string>
+    <string name="title_tenant_cloud_sign_in">Sign In into TenantCloud</string>
+    <string name="hint_choose_role">Choose role:</string>
+
+    <string name="error_user_is_already_registered">User is already registered</string>
+    <string name="error_google_api_exception_with_code">Google api exception was thrown, status code: %d</string>
+
+    <string name="user_role_customer">Customer</string>
+    <string name="user_role_admin">Admin</string>
+    <string name="text_or">Or</string>
+
 </resources>

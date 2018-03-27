@@ -65,9 +65,10 @@ public class DeviceStorageUserRepository implements UserRepository {
 
             if (!storageFilesAPI.isFileExist(USERS_FILE_NAME)) {
                 users.putAll(preloadAdmins());
+                save();
+            } else {
+                users.putAll(preloadFromFile());
             }
-
-            users.putAll(preloadFromFile());
         }
     }
 

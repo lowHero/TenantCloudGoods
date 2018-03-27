@@ -21,6 +21,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public static Intent getCallingIntent(Context context, User user) {
         return new Intent(context, HomeActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 .putExtra(EXTRA_USER, user);
     }
 

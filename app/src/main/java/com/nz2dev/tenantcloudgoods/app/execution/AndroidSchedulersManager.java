@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.device.execution;
+package com.nz2dev.tenantcloudgoods.app.execution;
 
 import android.support.annotation.NonNull;
 

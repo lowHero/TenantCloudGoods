@@ -1,4 +1,4 @@
-package com.nz2dev.tenantcloudgoods.app.presentation.modules.login;
+package com.nz2dev.tenantcloudgoods.app.presentation.modules.auth.signin;
 
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 
@@ -9,6 +9,6 @@ import dagger.Subcomponent;
  */
 @PerFragment
 @Subcomponent
-public interface GoogleSignInComponent {
-    void inject(GoogleSignInFragment googleSignInFragment);
+public interface SignInComponent {
+    void inject(SignInFragment signInFragment);
 }

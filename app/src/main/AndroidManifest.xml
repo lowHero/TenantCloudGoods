@@ -11,15 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".app.presentation.modules.launch.LaunchActivity">
+        <activity
+            android:name=".app.presentation.modules.auth.AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".app.presentation.modules.home.HomeActivity" />
-        <activity android:name=".app.presentation.modules.login.GoogleSignInActivity" />
-        <activity android:name=".app.presentation.modules.scanning.BarCodeCallerActivity" />
         <activity android:name=".app.presentation.modules.shop.ShopActivity" />
         <activity android:name=".app.presentation.modules.checkout.CheckoutActivity" />
     </application>

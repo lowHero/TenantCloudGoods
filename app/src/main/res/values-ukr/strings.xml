@@ -1,0 +1,16 @@
+<resources>
+    <string name="action_add">Додати</string>
+    <string name="action_checkout">Оплатити</string>
+    <string name="action_sign_up">Зареєструватися</string>
+    <string name="action_sign_in">Увійти</string>
+    <string name="action_change">Змінити</string>
+
+    <string name="user_role_customer">Клієнт</string>
+    <string name="user_role_admin">Адміністратор</string>
+
+    <string name="error_user_is_already_registered">Такий користувач вже зареєстрований</string>
+
+    <string name="title_sign_up">Зареєструватись</string>
+    <string name="hint_choose_role">Оберіть роль:</string>
+    <string name="text_or">Або</string>
+</resources>

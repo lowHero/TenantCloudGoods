@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    public static User createCustomer(String externalId) {
-        return new User(-1, externalId, false);
+    public static User create(String externalId, boolean admin) {
+        return new User(-1, externalId, admin);
     }
 
     public static User createEmptyExternalIdHolder(String externalId) {
