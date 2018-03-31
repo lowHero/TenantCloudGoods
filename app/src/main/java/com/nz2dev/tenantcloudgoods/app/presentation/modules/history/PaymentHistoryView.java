@@ -1,6 +1,6 @@
 package com.nz2dev.tenantcloudgoods.app.presentation.modules.history;
 
-import com.nz2dev.tenantcloudgoods.domain.models.Payment;
+import com.nz2dev.tenantcloudgoods.domain.models.Check;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import java.util.List;
  */
 interface PaymentHistoryView {
 
-    void showHistory(List<Payment> payments);
+    void showHistory(List<Check> payments);
 
 }

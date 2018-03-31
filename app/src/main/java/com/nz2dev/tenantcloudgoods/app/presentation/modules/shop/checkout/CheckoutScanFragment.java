@@ -51,9 +51,6 @@ public class CheckoutScanFragment extends Fragment {
 
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         String serializedCheckData = getArguments().getString(KEY_CHECK_DATA);
         ImageView checkQRCodeImage = view.findViewById(R.id.iv_check_qr_code);

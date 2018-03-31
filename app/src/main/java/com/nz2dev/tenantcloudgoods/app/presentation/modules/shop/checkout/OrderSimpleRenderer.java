@@ -11,6 +11,7 @@ import com.nz2dev.tenantcloudgoods.domain.models.Order;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
 import com.pedrogomez.renderers.RendererBuilder;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +50,10 @@ public class OrderSimpleRenderer extends Renderer<Order> {
 
     @Override
     public void render() {
+        Picasso.get().load(getContent().getGoods().getImageUrl())
+                .placeholder(R.drawable.ic_goods_image_placeholder_black_72dp)
+                .into(goodsImage);
+
         goodsName.setText(getContent().getGoods().getName());
         orderGoodsAmountText.setText(String.valueOf(getContent().getGoodsAmount()));
         orderTotalPriceText.setText(format(getDefault(), "%.1f$", getContent().getTotalPrice()));

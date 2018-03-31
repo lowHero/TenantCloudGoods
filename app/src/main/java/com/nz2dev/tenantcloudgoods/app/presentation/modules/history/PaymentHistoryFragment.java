@@ -14,7 +14,8 @@ import android.view.ViewGroup;
 
 import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.utils.Dependencies;
-import com.nz2dev.tenantcloudgoods.domain.models.Payment;
+import com.nz2dev.tenantcloudgoods.domain.models.Check;
+import com.nz2dev.tenantcloudgoods.domain.models.User;
 import com.pedrogomez.renderers.RVRendererAdapter;
 
 import java.util.List;
@@ -29,15 +30,20 @@ import butterknife.ButterKnife;
  */
 public class PaymentHistoryFragment extends Fragment implements PaymentHistoryView {
 
-    public static PaymentHistoryFragment newInstance() {
-        return new PaymentHistoryFragment();
+    public static PaymentHistoryFragment newInstance(User user) {
+        Bundle args = new Bundle();
+        args.putSerializable(user.getClass().getName(), user);
+
+        PaymentHistoryFragment fragment = new PaymentHistoryFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.rv_payment_list) RecyclerView paymentList;
 
     @Inject PaymentHistoryPresenter presenter;
-    private RVRendererAdapter<Payment> adapter;
+    private RVRendererAdapter<Check> adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,10 +71,12 @@ public class PaymentHistoryFragment extends Fragment implements PaymentHistoryVi
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        adapter = PaymentRenderer.createAdapter();
+        adapter = CheckRenderer.createAdapter();
         paymentList.setAdapter(adapter);
 
+        User user = (User) getArguments().getSerializable(User.class.getName());
         presenter.setView(this);
+        presenter.prepare(user);
     }
 
     @Override
@@ -88,7 +96,7 @@ public class PaymentHistoryFragment extends Fragment implements PaymentHistoryVi
     }
 
     @Override
-    public void showHistory(List<Payment> payments) {
+    public void showHistory(List<Check> payments) {
         adapter.clear();
         adapter.addAll(payments);
         adapter.notifyDataSetChanged();

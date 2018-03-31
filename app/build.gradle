@@ -40,7 +40,9 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterKnife_version"
     implementation 'com.google.android.gms:play-services-auth:12.0.0'
     implementation 'com.google.zxing:core:3.3.0'
+    implementation "android.arch.persistence.room:runtime:$roomORM_version"
 
+    annotationProcessor "android.arch.persistence.room:compiler:$roomORM_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnife_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
@@ -48,6 +50,7 @@ dependencies {
     testImplementation "org.assertj:assertj-core:$assertj_version"
     testImplementation "org.powermock:powermock-module-junit4:$powerMock_version"
     testImplementation "org.powermock:powermock-api-mockito:$powerMock_version"
+    testImplementation "org.robolectric:robolectric:3.5.1"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

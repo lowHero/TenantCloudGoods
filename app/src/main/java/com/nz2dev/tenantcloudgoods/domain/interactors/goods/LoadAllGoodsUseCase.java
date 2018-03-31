@@ -2,6 +2,7 @@ package com.nz2dev.tenantcloudgoods.domain.interactors.goods;
 
 import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.models.Goods;
+import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
 
 import java.util.List;
@@ -27,8 +28,9 @@ public class LoadAllGoodsUseCase {
         this.goodsWarehouse = goodsWarehouse;
     }
 
-    public Single<List<Goods>> executor() {
-        return goodsWarehouse.getAllGoods()
+    public Single<List<Goods>> executor(Shop shop) {
+        return goodsWarehouse
+                .getAllGoods(shop.getId())
                 .subscribeOn(schedulers.getBackground())
                 .observeOn(schedulers.getUI());
     }

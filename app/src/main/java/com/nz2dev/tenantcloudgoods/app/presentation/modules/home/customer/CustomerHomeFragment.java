@@ -91,7 +91,7 @@ public class CustomerHomeFragment extends Fragment implements CustomerHomeView, 
 
     @OnClick(R.id.iv_go_history)
     public void onGoHistoryClick() {
-        Navigator.navigatePaymentHistoryFrom(getActivity());
+        Navigator.navigatePaymentHistoryFrom(getActivity(), presenter.getPendingCustomer());
     }
 
     @Override

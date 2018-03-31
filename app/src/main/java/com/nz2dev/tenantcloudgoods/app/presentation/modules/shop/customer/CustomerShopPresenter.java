@@ -29,6 +29,7 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
 
     private List<Order> basket = new ArrayList<>();
     private Shop pendingShop;
+    private User pendingUser;
 
     @Inject
     CustomerShopPresenter(CreateOrderByScannedResultUseCase createOrderByScannedResultUseCase, CreateCheckUserCase createCheckUserCase) {
@@ -36,8 +37,9 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
         this.createCheckUserCase = createCheckUserCase;
     }
 
-    void prepare(Shop shop) {
+    void prepare(Shop shop, User user) {
         pendingShop = shop;
+        pendingUser = user;
     }
 
     void handleScannedResult(String result) {
@@ -53,7 +55,7 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
 
                     basket.add(order);
                     getView().showOrder(order);
-                    getView().showPossibleCheckPrice(calculatePossibleCheckPrice());
+                    getView().showPossibleCheckPrice(Order.priceOf(basket));
                 }, throwable -> {
                     if (throwable instanceof GoodsNotFoundException) {
                         GoodsNotFoundException e = (GoodsNotFoundException) throwable;
@@ -70,32 +72,25 @@ class CustomerShopPresenter extends DisposableBasePresenter<CustomerShopView> {
         // In this stage is possible to call some useCase that will calculate some discounts
         // or check if there enough amount etc.
         // But for now make it simple.
-        if (order.getGoods().getAvailableAmount() > goodsAmount && goodsAmount >= 1) {
+        if (order.getGoods().getAvailableAmount() >= goodsAmount && goodsAmount >= 1) {
             order.setGoodsAmount(goodsAmount);
             order.setTotalPrice(order.getGoods().getPrice() * goodsAmount);
 
             getView().showOrderUpdates(order);
-            getView().showPossibleCheckPrice(calculatePossibleCheckPrice());
+            getView().showPossibleCheckPrice(Order.priceOf(basket));
         }
     }
 
     void deleteOrderFromBasket(Order orderToDelete) {
         basket.remove(orderToDelete);
         getView().showOrderDeleted(orderToDelete);
+        getView().showPossibleCheckPrice(Order.priceOf(basket));
     }
 
     void checkoutClick() {
         manage("Creating", createCheckUserCase
                 .executor(pendingShop, basket)
-                .subscribe(getView()::navigateCheckout));
-    }
-
-    private float calculatePossibleCheckPrice() {
-        float totalCheckPrice = 0f;
-        for (Order orderToCalculate : basket) {
-            totalCheckPrice += orderToCalculate.getTotalPrice();
-        }
-        return totalCheckPrice;
+                .subscribe(check -> getView().navigateCheckout(check, pendingUser)));
     }
 
 }

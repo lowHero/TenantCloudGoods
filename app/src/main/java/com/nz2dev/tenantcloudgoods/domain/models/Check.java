@@ -1,6 +1,7 @@
 package com.nz2dev.tenantcloudgoods.domain.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,26 +9,40 @@ import java.util.List;
  */
 public class Check implements Serializable {
 
-    private Shop shop;
-    private List<Order> orders;
-    private float price;
+    public static Check create(Shop shop, List<Order> orders) {
+        return new Check(0, shop, new Date(), orders);
+    }
 
-    public Check(Shop shop, List<Order> orders, float price) {
+    private long id;
+    private Shop shop;
+    private Date time;
+    private List<Order> orders;
+
+    public Check(long id, Shop shop, Date time, List<Order> orders) {
+        this.id = id;
         this.shop = shop;
+        this.time = time;
         this.orders = orders;
-        this.price = price;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public Shop getShop() {
         return shop;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public Date getTime() {
+        return time;
     }
 
-    public float getPrice() {
-        return price;
+    public List<Order> getOrders() {
+        return orders;
     }
 
 }

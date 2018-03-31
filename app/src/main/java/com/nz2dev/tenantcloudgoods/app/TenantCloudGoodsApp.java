@@ -14,7 +14,10 @@ public class TenantCloudGoodsApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Picasso.setSingletonInstance(new Picasso.Builder(this).build());
+        Picasso.setSingletonInstance(new Picasso.Builder(this)
+                .loggingEnabled(true)
+                .build());
+
         dependencies = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();

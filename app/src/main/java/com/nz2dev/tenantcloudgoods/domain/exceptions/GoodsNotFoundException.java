@@ -5,14 +5,14 @@ package com.nz2dev.tenantcloudgoods.domain.exceptions;
  */
 public class GoodsNotFoundException extends RuntimeException {
 
-    private final int id;
+    private final long id;
 
-    public GoodsNotFoundException(int id) {
+    public GoodsNotFoundException(long id) {
         super("id = " + id);
         this.id = id;
     }
 
-    public int getGoodsId() {
+    public long getGoodsId() {
         return id;
     }
 }

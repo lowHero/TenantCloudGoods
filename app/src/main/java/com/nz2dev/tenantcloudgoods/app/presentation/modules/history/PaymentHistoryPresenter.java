@@ -2,7 +2,8 @@ package com.nz2dev.tenantcloudgoods.app.presentation.modules.history;
 
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBasePresenter;
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
-import com.nz2dev.tenantcloudgoods.domain.interactors.orders.LoadAllPaymentHistoryUseCase;
+import com.nz2dev.tenantcloudgoods.domain.interactors.orders.LoadPaymentHistoryUseCase;
+import com.nz2dev.tenantcloudgoods.domain.models.User;
 
 import javax.inject.Inject;
 
@@ -10,20 +11,19 @@ import javax.inject.Inject;
  * Created by nz2Dev on 27.03.2018
  */
 @PerFragment
-public class PaymentHistoryPresenter extends DisposableBasePresenter<PaymentHistoryView> {
+class PaymentHistoryPresenter extends DisposableBasePresenter<PaymentHistoryView> {
 
-    private final LoadAllPaymentHistoryUseCase loadAllPaymentHistoryUseCase;
+    private final LoadPaymentHistoryUseCase loadPaymentHistoryUseCase;
 
     @Inject
-    public PaymentHistoryPresenter(LoadAllPaymentHistoryUseCase loadAllPaymentHistoryUseCase) {
-        this.loadAllPaymentHistoryUseCase = loadAllPaymentHistoryUseCase;
+    PaymentHistoryPresenter(LoadPaymentHistoryUseCase loadPaymentHistoryUseCase) {
+        this.loadPaymentHistoryUseCase = loadPaymentHistoryUseCase;
     }
 
-    @Override
-    protected void onViewReady() {
+    void prepare(User user) {
         super.onViewReady();
-        manage(loadAllPaymentHistoryUseCase
-                .executor()
+        manage(loadPaymentHistoryUseCase
+                .executor(user)
                 .subscribe(getView()::showHistory));
     }
 

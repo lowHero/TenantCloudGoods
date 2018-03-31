@@ -5,6 +5,7 @@ import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;
 import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,14 +27,7 @@ public class CreateCheckUserCase {
     }
 
     public Single<Check> executor(Shop shop, List<Order> orderList) {
-        return Single.just(orderList)
-                .map(orders -> {
-                    float totalAmount = 0;
-                    for (Order order : orders) {
-                        totalAmount += order.getGoodsAmount() * order.getGoods().getPrice();
-                    }
-                    return new Check(shop, orders, totalAmount);
-                })
+        return Single.just(Check.create(shop, orderList))
                 .subscribeOn(schedulers.getBackground())
                 .observeOn(schedulers.getUI());
     }

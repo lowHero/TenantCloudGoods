@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.utils.Dependencies;
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;
+import com.nz2dev.tenantcloudgoods.domain.models.User;
 import com.pedrogomez.renderers.RVRendererAdapter;
 
 import java.util.List;
@@ -34,9 +36,10 @@ import butterknife.OnClick;
  */
 public class CheckoutFragment extends Fragment implements CheckoutView {
 
-    public static CheckoutFragment newInstance(Check check) {
+    public static CheckoutFragment newInstance(Check check, User user) {
         Bundle args = new Bundle();
         args.putSerializable(check.getClass().getName(), check);
+        args.putSerializable(user.getClass().getName(), user);
 
         CheckoutFragment fragment = new CheckoutFragment();
         fragment.setArguments(args);
@@ -79,8 +82,11 @@ public class CheckoutFragment extends Fragment implements CheckoutView {
         adapter = OrderSimpleRenderer.createAdapter();
         checkoutOrdersList.setAdapter(adapter);
 
+        Check check = (Check) getArguments().getSerializable(Check.class.getName());
+        User user = (User) getArguments().getSerializable(User.class.getName());
+
         presenter.setView(this);
-        presenter.prepare((Check) getArguments().getSerializable(Check.class.getName()));
+        presenter.prepare(check, user);
     }
 
     @Override
@@ -124,9 +130,9 @@ public class CheckoutFragment extends Fragment implements CheckoutView {
 
     @Override
     public void showScan(String checkData) {
+        getFragmentManager().popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fl_activity_content, CheckoutScanFragment.newInstance(checkData))
-                .addToBackStack(null)
                 .commit();
     }
 

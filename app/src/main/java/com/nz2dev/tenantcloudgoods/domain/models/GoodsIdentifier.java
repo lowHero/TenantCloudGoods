@@ -5,9 +5,9 @@ package com.nz2dev.tenantcloudgoods.domain.models;
  */
 public class GoodsIdentifier {
 
-    public final int id;
+    public final long id;
 
-    public GoodsIdentifier(int id) {
+    public GoodsIdentifier(long id) {
         this.id = id;
     }
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     public static User create(String externalId, boolean admin) {
-        return new User(-1, externalId, admin);
+        return new User(0, externalId, admin);
     }
 
     public static User createEmptyExternalIdHolder(String externalId) {
@@ -19,17 +19,21 @@ public class User implements Serializable {
         return user.id == -2;
     }
 
-    private int id;
+    private long id;
     private String externalId;
     private boolean admin;
 
-    public User(int id, String externalId, boolean admin) {
+    public User(long id, String externalId, boolean admin) {
         this.id = id;
         this.externalId = externalId;
         this.admin = admin;
     }
 
-    public int getId() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -55,10 +59,9 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
         result = 31 * result + (admin ? 1 : 0);
         return result;
     }
-
 }

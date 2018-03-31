@@ -69,6 +69,9 @@ class SignUpPresenter extends DisposableBasePresenter<SignUpView> {
             }
         });
         task.addOnSuccessListener(command -> {
+            if (!isViewAttached())
+                return;
+
             getView().showAccountSelected(false);
             if (silentSignInAfterSignOutEnabled) {
                 silentSignInAfterSignOutEnabled = false;

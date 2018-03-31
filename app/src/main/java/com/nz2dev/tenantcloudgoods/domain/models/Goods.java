@@ -8,43 +8,75 @@ import java.io.Serializable;
 public class Goods implements Serializable {
 
     public static Goods empty() {
-        return new Goods(-1, null, null, -1f, -1);
+        return new Goods(-1, -1, null, null, -1f, -1);
     }
 
     public static boolean isEmpty(Goods goods) {
         return goods.id == -1
+                && goods.shopId == -1
                 && goods.imageUrl == null
                 && Float.compare(-1f, goods.getPrice()) == 0
                 && goods.availableAmount == -1;
     }
 
-    public static Goods emptyIdHolder(int id) {
-        return new Goods(id, null, null, -1f, -1);
+    public static Goods emptyIdHolder(long id) {
+        return new Goods(id, -1, null, null, -1f, -1);
     }
 
     public static boolean isEmptyIdHolder(Goods goods) {
         return goods.name == null
+                && goods.shopId == -1
                 && goods.imageUrl == null
                 && Float.floatToIntBits(goods.price) == Float.floatToIntBits(-1f)
                 && goods.availableAmount == -1;
     }
 
-    private int id;
+    private long id;
+    private long shopId;
     private String name;
     private String imageUrl;
     private float price;
     private int availableAmount;
 
-    public Goods(int id, String name, String imageUrl, float price, int availableAmount) {
+    public Goods(long id, long shopId, String name, String imageUrl, float price, int availableAmount) {
         this.id = id;
+        this.shopId = shopId;
         this.name = name;
         this.imageUrl = imageUrl;
         this.price = price;
         this.availableAmount = availableAmount;
     }
 
-    public int getId() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setShopId(long shopId) {
+        this.shopId = shopId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public void setAvailableAmount(int availableAmount) {
+        this.availableAmount = availableAmount;
+    }
+
+    public long getId() {
         return id;
+    }
+
+    public long getShopId() {
+        return shopId;
     }
 
     public String getName() {
@@ -71,6 +103,7 @@ public class Goods implements Serializable {
         Goods goods = (Goods) o;
 
         if (id != goods.id) return false;
+        if (shopId != goods.shopId) return false;
         if (Float.compare(goods.price, price) != 0) return false;
         if (availableAmount != goods.availableAmount) return false;
         if (name != null ? !name.equals(goods.name) : goods.name != null) return false;
@@ -79,7 +112,8 @@ public class Goods implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (shopId ^ (shopId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
         result = 31 * result + (price != +0.0f ? Float.floatToIntBits(price) : 0);
@@ -91,6 +125,7 @@ public class Goods implements Serializable {
     public String toString() {
         return "Goods{" +
                 "id=" + id +
+                ", shopId=" + shopId +
                 ", name='" + name + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", price=" + price +

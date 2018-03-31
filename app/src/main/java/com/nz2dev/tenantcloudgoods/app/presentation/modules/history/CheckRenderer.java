@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.nz2dev.tenantcloudgoods.R;
 import com.nz2dev.tenantcloudgoods.app.presentation.modules.shop.checkout.OrderSimpleRenderer;
+import com.nz2dev.tenantcloudgoods.domain.models.Check;
 import com.nz2dev.tenantcloudgoods.domain.models.Order;
-import com.nz2dev.tenantcloudgoods.domain.models.Payment;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
 import com.pedrogomez.renderers.RendererBuilder;
@@ -23,14 +23,15 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 
 /**
  * Created by nz2Dev on 27.03.2018
  */
-public class PaymentRenderer extends Renderer<Payment> {
+public class CheckRenderer extends Renderer<Check> {
 
-    public static RVRendererAdapter<Payment> createAdapter() {
-        return new RVRendererAdapter<>(new RendererBuilder<>(new PaymentRenderer()));
+    public static RVRendererAdapter<Check> createAdapter() {
+        return new RVRendererAdapter<>(new RendererBuilder<>(new CheckRenderer()));
     }
 
     @BindView(R.id.tv_shop_name) TextView shopName;
@@ -45,7 +46,7 @@ public class PaymentRenderer extends Renderer<Payment> {
     @Override
     protected void hookListeners(View rootView) {
         rootView.setOnClickListener(v -> {
-            ShowOrdersDialog dialog = new ShowOrdersDialog(getContext(), getContent().getCheck().getOrders());
+            ShowOrdersDialog dialog = new ShowOrdersDialog(getContext(), getContent().getOrders());
             dialog.show();
         });
     }
@@ -57,8 +58,8 @@ public class PaymentRenderer extends Renderer<Payment> {
 
     @Override
     public void render() {
-        shopName.setText(getContent().getCheck().getShop().getName());
-        checkPriceText.setText(String.format(Locale.getDefault(), "-%.1f$", getContent().getCheck().getPrice()));
+        shopName.setText(getContent().getShop().getName());
+        checkPriceText.setText(String.format(Locale.getDefault(), "-%.1f$", Order.priceOf(getContent().getOrders())));
         paymentDate.setText(DateFormat.format("yyyy/MM/dd", getContent().getTime()));
     }
 

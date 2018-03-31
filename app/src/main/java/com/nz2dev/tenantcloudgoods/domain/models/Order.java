@@ -1,24 +1,39 @@
 package com.nz2dev.tenantcloudgoods.domain.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by nz2Dev on 26.03.2018
  */
 public class Order implements Serializable {
 
-    public static Order createSingle(Goods goods) {
-        return new Order(goods, 1, -1);
+    public static float priceOf(List<Order> orders) {
+        float totalPrice = 0f;
+        for (Order order : orders) {
+            totalPrice += order.getTotalPrice();
+        }
+        return totalPrice;
     }
 
+    public static Order createSingle(Goods goods) {
+        return new Order(0, goods, 1, -1);
+    }
+
+    private long id;
     private Goods goods;
     private int goodsAmount;
     private float totalPrice;
 
-    public Order(Goods goods, int goodsAmount, float totalPrice) {
+    public Order(long id, Goods goods, int goodsAmount, float totalPrice) {
+        this.id = id;
         this.goods = goods;
         this.goodsAmount = goodsAmount;
         this.totalPrice = totalPrice;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void set(Order order) {

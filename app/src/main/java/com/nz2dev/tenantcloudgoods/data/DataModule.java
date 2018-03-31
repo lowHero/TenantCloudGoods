@@ -1,15 +1,19 @@
 package com.nz2dev.tenantcloudgoods.data;
 
+import android.arch.persistence.room.Room;
+import android.content.Context;
+
 import com.google.gson.Gson;
+import com.nz2dev.tenantcloudgoods.data.api.room.TenantCloudGoodsDatabase;
 import com.nz2dev.tenantcloudgoods.data.preferences.SharedAccountPreferences;
-import com.nz2dev.tenantcloudgoods.data.repositories.DeviceStoragePaymentHistory;
-import com.nz2dev.tenantcloudgoods.data.repositories.DeviceStorageUserRepository;
-import com.nz2dev.tenantcloudgoods.data.repositories.MemoryGoodsWarehouse;
-import com.nz2dev.tenantcloudgoods.data.repositories.MemoryShopRepository;
+import com.nz2dev.tenantcloudgoods.data.repositories.RoomCheckRepository;
+import com.nz2dev.tenantcloudgoods.data.repositories.RoomGoodsWarehouse;
+import com.nz2dev.tenantcloudgoods.data.repositories.RoomShopRepository;
+import com.nz2dev.tenantcloudgoods.data.repositories.RoomUserRepository;
 import com.nz2dev.tenantcloudgoods.data.tools.JsonSerializer;
 import com.nz2dev.tenantcloudgoods.domain.preferences.AccountPreferences;
 import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
-import com.nz2dev.tenantcloudgoods.domain.repositories.PaymentHistory;
+import com.nz2dev.tenantcloudgoods.domain.repositories.CheckRepository;
 import com.nz2dev.tenantcloudgoods.domain.repositories.ShopRepository;
 import com.nz2dev.tenantcloudgoods.domain.repositories.UserRepository;
 import com.nz2dev.tenantcloudgoods.domain.tools.Serializer;
@@ -45,26 +49,34 @@ public class DataModule {
 
     @Provides
     @Singleton
-    GoodsWarehouse provideGoodsWarehouse(MemoryGoodsWarehouse memoryGoodsWarehouse) {
-        return memoryGoodsWarehouse;
+    TenantCloudGoodsDatabase provideDatabase(Context context) {
+        return Room.databaseBuilder(context, TenantCloudGoodsDatabase.class, "TenantCloudGoodsDatabase")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Provides
     @Singleton
-    ShopRepository provideShopRepository(MemoryShopRepository memoryShopRepository) {
-        return memoryShopRepository;
+    GoodsWarehouse provideGoodsWarehouse(RoomGoodsWarehouse roomGoodsWarehouse) {
+        return roomGoodsWarehouse;
     }
 
     @Provides
     @Singleton
-    UserRepository provideUserRepository(DeviceStorageUserRepository deviceStorageUserRepository) {
-        return deviceStorageUserRepository;
+    ShopRepository provideShopRepository(RoomShopRepository roomShopRepository) {
+        return roomShopRepository;
     }
 
     @Provides
     @Singleton
-    PaymentHistory providePaymentHistory(DeviceStoragePaymentHistory deviceStoragePaymentHistory) {
-        return deviceStoragePaymentHistory;
+    UserRepository provideUserRepository(RoomUserRepository roomUserRepository) {
+        return roomUserRepository;
+    }
+
+    @Provides
+    @Singleton
+    CheckRepository providePaymentHistory(RoomCheckRepository roomCheckRepository) {
+        return roomCheckRepository;
     }
 
 }

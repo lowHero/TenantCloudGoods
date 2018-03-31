@@ -5,8 +5,10 @@ import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.DisposableBas
 import com.nz2dev.tenantcloudgoods.app.presentation.infrastructure.PerFragment;
 import com.nz2dev.tenantcloudgoods.domain.exceptions.CheckDataGenerationException;
 import com.nz2dev.tenantcloudgoods.domain.interactors.orders.GenerateCheckDataUseCase;
-import com.nz2dev.tenantcloudgoods.domain.interactors.orders.SaveCheckToHistoryUseCase;
+import com.nz2dev.tenantcloudgoods.domain.interactors.orders.PerformPaymentUseCase;
 import com.nz2dev.tenantcloudgoods.domain.models.Check;
+import com.nz2dev.tenantcloudgoods.domain.models.Order;
+import com.nz2dev.tenantcloudgoods.domain.models.User;
 
 import javax.inject.Inject;
 
@@ -19,25 +21,27 @@ import static com.nz2dev.tenantcloudgoods.app.utils.ThrowableUtils.handleUncaugh
 class CheckoutPresenter extends DisposableBasePresenter<CheckoutView> {
 
     private final GenerateCheckDataUseCase generateCheckDataUseCase;
-    private final SaveCheckToHistoryUseCase saveCheckToHistoryUseCase;
+    private final PerformPaymentUseCase performPaymentUseCase;
 
     private Check pendingCheck;
+    private User pendingUser;
 
     @Inject
-    CheckoutPresenter(GenerateCheckDataUseCase generateCheckDataUseCase, SaveCheckToHistoryUseCase saveCheckToHistoryUseCase) {
+    CheckoutPresenter(GenerateCheckDataUseCase generateCheckDataUseCase, PerformPaymentUseCase performPaymentUseCase) {
         this.generateCheckDataUseCase = generateCheckDataUseCase;
-        this.saveCheckToHistoryUseCase = saveCheckToHistoryUseCase;
+        this.performPaymentUseCase = performPaymentUseCase;
     }
 
-    void prepare(Check check) {
+    void prepare(Check check, User user) {
         pendingCheck = check;
-        getView().showCheckAmount(check.getPrice());
+        pendingUser = user;
+        getView().showCheckAmount(Order.priceOf(check.getOrders()));
         getView().showCheckOrders(check.getOrders());
     }
 
     void confirmCheckout() {
-        manage("Confirming", saveCheckToHistoryUseCase
-                .executor(pendingCheck)
+        manage("Confirming", performPaymentUseCase
+                .executor(pendingCheck, pendingUser)
                 .flatMap(generateCheckDataUseCase::executor)
                 .subscribe(checkData -> getView().showScan(checkData), throwable -> {
                     if (throwable instanceof CheckDataGenerationException) {

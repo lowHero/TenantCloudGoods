@@ -85,7 +85,9 @@ public class AdminShopFragment extends Fragment implements AdminShopView {
         adapter = GoodsRenderer.createAdapter();
         availableOrdersList.setAdapter(adapter);
 
+        Shop shop = (Shop) getArguments().getSerializable(Shop.class.getName());
         presenter.setView(this);
+        presenter.prepare(shop);
     }
 
     @Override

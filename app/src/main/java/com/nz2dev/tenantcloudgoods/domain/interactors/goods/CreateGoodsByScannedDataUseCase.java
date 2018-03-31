@@ -3,6 +3,7 @@ package com.nz2dev.tenantcloudgoods.domain.interactors.goods;
 import com.nz2dev.tenantcloudgoods.domain.exceptions.GoodsEmptyDataException;
 import com.nz2dev.tenantcloudgoods.domain.execution.SchedulersManager;
 import com.nz2dev.tenantcloudgoods.domain.models.Goods;
+import com.nz2dev.tenantcloudgoods.domain.models.Shop;
 import com.nz2dev.tenantcloudgoods.domain.repositories.GoodsWarehouse;
 import com.nz2dev.tenantcloudgoods.domain.tools.Serializer;
 
@@ -29,13 +30,15 @@ public class CreateGoodsByScannedDataUseCase {
         this.serializer = serializer;
     }
 
-    public Single<Goods> executor(String scanData) {
+    public Single<Goods> executor(Shop shop, String scanData) {
         return Single.just(scanData)
                 .map(serializer::deserializeGoods)
                 .map(goods -> {
                     if (Goods.isEmpty(goods)) {
                         throw new GoodsEmptyDataException();
                     }
+                    goods.setId(0);
+                    goods.setShopId(shop.getId());
                     return goods;
                 })
                 .flatMap(goodsWarehouse::add)

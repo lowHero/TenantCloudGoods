@@ -93,9 +93,10 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
         adapter = OrderRenderer.createAdapter(this);
         basketList.setAdapter(adapter);
 
-        Shop shopFromArguments = (Shop) getArguments().getSerializable(Shop.class.getName());
+        Shop shop = (Shop) getArguments().getSerializable(Shop.class.getName());
+        User user = (User) getArguments().getSerializable(User.class.getName());
         presenter.setView(this);
-        presenter.prepare(shopFromArguments);
+        presenter.prepare(shop, user);
     }
 
     @Override
@@ -189,10 +190,10 @@ public class CustomerShopFragment extends Fragment implements CustomerShopView, 
     }
 
     @Override
-    public void navigateCheckout(Check check) {
+    public void navigateCheckout(Check check, User user) {
         getFragmentManager().beginTransaction()
                 .hide(this)
-                .add(R.id.fl_activity_content, CheckoutFragment.newInstance(check))
+                .add(R.id.fl_activity_content, CheckoutFragment.newInstance(check, user))
                 .addToBackStack(null)
                 .commit();
     }

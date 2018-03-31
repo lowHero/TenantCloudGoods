@@ -7,11 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nz2dev.tenantcloudgoods.R;
-import com.nz2dev.tenantcloudgoods.app.utils.RVRendererAdapterUtils;
 import com.nz2dev.tenantcloudgoods.domain.models.Goods;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
 import com.pedrogomez.renderers.RendererBuilder;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +50,10 @@ public class GoodsRenderer extends Renderer<Goods> {
 
     @Override
     public void render() {
+        Picasso.get().load(getContent().getImageUrl())
+                .placeholder(R.drawable.ic_goods_image_placeholder_black_72dp)
+                .into(goodsImage);
+
         goodsName.setText(getContent().getName());
         goodsPriceText.setText(format(getDefault(), "%.1f$", getContent().getPrice()));
         goodsIdText.setText(String.valueOf(getContent().getId()));

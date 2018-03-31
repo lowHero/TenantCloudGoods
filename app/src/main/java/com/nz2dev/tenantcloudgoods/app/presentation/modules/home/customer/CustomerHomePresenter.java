@@ -36,6 +36,10 @@ class CustomerHomePresenter extends DisposableBasePresenter<CustomerHomeView> {
                 .subscribe(getView()::showAllShops));
     }
 
+    User getPendingCustomer() {
+        return pendingUser;
+    }
+
     void shopClick(Shop shop) {
         getView().navigateShopForCustomer(shop, pendingUser);
     }

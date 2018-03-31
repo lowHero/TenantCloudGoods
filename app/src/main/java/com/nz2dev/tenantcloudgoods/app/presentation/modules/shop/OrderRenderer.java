@@ -14,6 +14,7 @@ import com.nz2dev.tenantcloudgoods.domain.models.Order;
 import com.pedrogomez.renderers.RVRendererAdapter;
 import com.pedrogomez.renderers.Renderer;
 import com.pedrogomez.renderers.RendererBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +126,10 @@ public class OrderRenderer extends Renderer<Order> {
 
     @Override
     public void render() {
+        Picasso.get().load(getContent().getGoods().getImageUrl())
+                .placeholder(R.drawable.ic_goods_image_placeholder_black_72dp)
+                .into(goodsImage);
+
         goodsNameText.setText(getContent().getGoods().getName());
 
         orderGoodsAmountText.setText(String.valueOf(getContent().getGoodsAmount()));

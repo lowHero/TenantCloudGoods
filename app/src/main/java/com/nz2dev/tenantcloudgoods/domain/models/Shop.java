@@ -8,18 +8,22 @@ import java.io.Serializable;
 public class Shop implements Serializable {
 
     public static Shop createFromName(String name) {
-        return new Shop(-1, name);
+        return new Shop(0, name);
     }
 
-    private int id;
+    private long id;
     private String name;
 
-    public Shop(int id, String name) {
+    public Shop(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
         return id;
     }
 
